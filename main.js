@@ -355,6 +355,8 @@ function setupGoal(target) {
 var oldScore = 0;
 function levelTransition(timeout) {
 
+    console.log(timeout);
+
     // stop the timer
     clearTimeout(timerHandler);
     clearTimeout(shadowPlayerMoving)
@@ -371,9 +373,9 @@ function levelTransition(timeout) {
     ctx.fillStyle = "black";
     let levelHeight = (this_level.length - 2) * gridSize;
     if (animationCounter < levelHeight) {
-        animationCounter++;
+        animationCounter += 2;
         setTimeout(function () {
-            timeout = timeout / 4
+            timeout = timeout - 20;
             levelTransition(timeout);
         }, timeout);
     } else {
@@ -384,8 +386,8 @@ function levelTransition(timeout) {
 
 function levelTransitionEnd(timeout) {
     if (animationCounter > 0) {
-        animationCounter--;
-        setTimeout(levelTransitionEnd, timeout / 2);
+        animationCounter -= 2;
+        setTimeout(levelTransitionEnd, (timeout > 0) ? timeout-20 : 1);
     } else {
         oldScore = 0;
 
@@ -865,7 +867,7 @@ function drawGameOver(timeout) {
     ctx.fillRect(0, 32, levelWidth, gameOverCounter);
     let levelHeight = (this_level.length - 2) * gridSize;
     if (gameOverCounter < levelHeight) {
-        gameOverCounter++;
+        gameOverCounter += 2;
         gameoverHandler = setTimeout(drawGameOver, timeout);
     } else {
         // include score?
